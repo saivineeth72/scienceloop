@@ -1,0 +1,84 @@
+{
+  "name": "ScienceLoop",
+  "version": "1.0.0",
+  "description": "AI4Science project for understanding scientific papers",
+  "agents": {
+    "PaperUnderstandingAgent": {
+      "path": "./agents/PaperUnderstandingAgent.py",
+      "language": "python",
+      "description": "Analyzes scientific PDFs to extract formulas, variables, relationships, and key ideas",
+      "arguments": [
+        {
+          "name": "pdf",
+          "type": "string",
+          "required": true,
+          "description": "Path to PDF file inside /papers directory"
+        }
+      ]
+    },
+    "KnowledgeGraphAgent": {
+      "path": "./agents/KnowledgeGraphAgent.py",
+      "language": "python",
+      "description": "Builds a scientific knowledge graph from Step 1 JSON output",
+      "arguments": [
+        {
+          "name": "input",
+          "type": "string",
+          "required": false,
+          "description": "Path to JSON file from Step 1 (PaperUnderstandingAgent output)"
+        },
+        {
+          "name": "stdin",
+          "type": "boolean",
+          "required": false,
+          "description": "Read JSON from stdin instead of file"
+        }
+      ]
+    },
+    "HypothesisAgent": {
+      "path": "./agents/HypothesisAgent.py",
+      "language": "python",
+      "description": "Generates scientific hypotheses from paper understanding and knowledge graph using Claude 4.5 Sonnet",
+      "arguments": [
+        {
+          "name": "input",
+          "type": "string",
+          "required": true,
+          "description": "Path to JSON file from Step 1 (PaperUnderstandingAgent output)"
+        },
+        {
+          "name": "kg",
+          "type": "string",
+          "required": true,
+          "description": "Path to JSON file from KnowledgeGraphAgent (knowledge graph with nodes and edges)"
+        }
+      ]
+    },
+    "SimulationPlanAgent": {
+      "path": "./agents/SimulationPlanAgent.py",
+      "language": "python",
+      "description": "Generates a precise, simulation-ready plan from hypothesis, paper understanding, and knowledge graph using Claude 4.5 Sonnet",
+      "arguments": [
+        {
+          "name": "hypothesis",
+          "type": "string",
+          "required": true,
+          "description": "Path to JSON file from HypothesisAgent (hypothesis output)"
+        },
+        {
+          "name": "paper",
+          "type": "string",
+          "required": true,
+          "description": "Path to JSON file from PaperUnderstandingAgent (Step 1 output with formulas, variables, relationships)"
+        },
+        {
+          "name": "kg",
+          "type": "string",
+          "required": true,
+          "description": "Path to JSON file from KnowledgeGraphAgent (knowledge graph with nodes and edges)"
+        }
+      ]
+    }
+  }
+}
+
